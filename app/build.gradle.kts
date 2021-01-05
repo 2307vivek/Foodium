@@ -32,7 +32,6 @@ plugins {
 
 android {
     compileSdkVersion(30)
-    buildToolsVersion("30.0.0")
 
     defaultConfig {
         applicationId = "dev.shreyaspatil.foodium"
@@ -57,6 +56,7 @@ android {
     }
 
     buildFeatures.viewBinding = true
+    buildFeatures.compose = true
 
     buildTypes {
         getByName("release") {
@@ -73,14 +73,17 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    packagingOptions {
-        exclude("META-INF/*.kotlin_module")
+    composeOptions {
+        kotlinCompilerExtensionVersion =  Compose.version
+        kotlinCompilerVersion = "1.4.21"
     }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {
         jvmTarget = "1.8"
+        useIR = true
+        freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
     }
 }
 
@@ -131,6 +134,12 @@ dependencies {
     implementation(Hilt.hiltViewModel)
     kapt(Hilt.daggerCompiler)
     kapt(Hilt.hiltCompiler)
+
+    // Compose
+    implementation(Compose.ui)
+    implementation(Compose.material)
+    implementation(Compose.runtimeLivedata)
+    implementation(Compose.tooling)
 
     // Testing
     testImplementation(Testing.core)
