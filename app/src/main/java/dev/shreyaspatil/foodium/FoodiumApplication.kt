@@ -32,7 +32,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @HiltAndroidApp
-class FoodiumApp : Application() {
+class FoodiumApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
