@@ -11,7 +11,7 @@ object Testing {
 object Dependencies {
     const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib:1.4.21"
     const val kotlinGradle = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21"
-    const val gradle = "com.android.tools.build:gradle:7.0.0-alpha03"
+    const val gradle = "com.android.tools.build:gradle:7.0.0-alpha04"
     const val daggerHilt = "com.google.dagger:hilt-android-gradle-plugin:2.28-alpha"
     const val ktLint = "org.jlleitschuh.gradle:ktlint-gradle:9.2.1"
     const val materialDesign = "com.google.android.material:material:1.2.0"
