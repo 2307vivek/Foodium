@@ -22,29 +22,27 @@
  * SOFTWARE.
  */
 
-package dev.shreyaspatil.foodium.ui
+package dev.shreyaspatil.foodium.ui.state
 
-import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.platform.setContent
-import dagger.hilt.android.AndroidEntryPoint
-import dev.shreyaspatil.foodium.ui.main.MainViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import dev.shreyaspatil.foodium.data.repository.Resource
+import dev.shreyaspatil.foodium.model.State
+import java.util.Collections.copy
 
-@ExperimentalCoroutinesApi
-@AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+data class UiState<T>(
+    val loading: Boolean = false,
+    val error: String? = null,
+    val data: T? = null
+) {
+    val isSuccess: Boolean
+        get() = !loading && error != null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val mainViewModel: MainViewModel by viewModels()
-
-        mainViewModel.getPostsState()
-
-        setContent {
-            FoodiumApp(mainViewModel)
+    companion object {
+        /**
+         * Returns [UiState] from [Resource]
+         */
+        fun <T> fromResource(resource: Resource<T>): UiState<T> = when (resource) {
+            is Resource.Success -> UiState(data = resource.data)
+            is Resource.Failed -> UiState(error = resource.message)
         }
     }
 }

@@ -24,13 +24,19 @@
 
 package dev.shreyaspatil.foodium.ui.main
 
+import android.widget.Toast
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import dev.shreyaspatil.foodium.R
+import dev.shreyaspatil.foodium.model.State
 import dev.shreyaspatil.foodium.utils.onBulbClick
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -38,7 +44,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun MainScreen(mainViewModel: MainViewModel) {
     val context = AmbientContext.current
-    val posts = mainViewModel.postsLiveData.observeAsState().value
+    val posts = mainViewModel.postLiveState.observeAsState().value
     Scaffold(
         topBar = {
             TopAppBar(
