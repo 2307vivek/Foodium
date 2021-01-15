@@ -25,8 +25,6 @@
 package dev.shreyaspatil.foodium.ui.state
 
 import dev.shreyaspatil.foodium.data.repository.Resource
-import dev.shreyaspatil.foodium.model.State
-import java.util.Collections.copy
 
 data class UiState<T>(
     val loading: Boolean = false,

@@ -25,7 +25,6 @@
 package dev.shreyaspatil.foodium.ui.main
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -39,19 +38,21 @@ import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.viewModel
 import dev.chrisbanes.accompanist.coil.CoilImage
 import dev.shreyaspatil.foodium.R
 import dev.shreyaspatil.foodium.model.Post
-import dev.shreyaspatil.foodium.model.State
 import dev.shreyaspatil.foodium.utils.onBulbClick
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun MainScreen(mainViewModel: MainViewModel) {
+fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
     val context = AmbientContext.current
     val postsState = mainViewModel.postLiveState.observeAsState()
+
+    mainViewModel.getPostsState()
+
     Scaffold(
         topBar = {
             FoodiumTopAppBar(stringResource(R.string.app_name), context)
