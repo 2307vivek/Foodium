@@ -51,26 +51,46 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun MainScreen(mainViewModel: MainViewModel) {
     val context = AmbientContext.current
-    val postsState = mainViewModel.postLiveState.observeAsState().value
+    val postsState = mainViewModel.postLiveState.observeAsState()
     Scaffold(
         topBar = {
             FoodiumTopAppBar(stringResource(R.string.app_name), context)
         },
         bodyContent = {
-            if (postsState!!.loading) {
+            if (postsState.value!!.loading) {
                 Text(text = "Loading")
-            } else if (postsState.isSuccess) {
-                PostItem(postsState.data!![0])
+            } else if (postsState.value!!.isSuccess) {
+                PostList(posts = postsState.value!!.data!!)
             } else {
-                Text(text = postsState.error!!)
+                Text(text = postsState.value!!.error!!)
             }
         }
     )
 }
 
 @Composable
-fun PostItem(post: Post) {
-    Surface(modifier = Modifier.padding(top = 4.dp)) {
+fun PostList(posts: List<Post>) {
+    var topPadding: Int
+    LazyColumn(content = {
+        itemsIndexed(
+            items = posts,
+            itemContent = { index, post ->
+                topPadding = if (index == 0) 4 else 1
+                PostItem(
+                    post = post,
+                    modifier = Modifier.padding(top = topPadding.dp)
+                )
+            }
+        )
+    })
+}
+
+@Composable
+fun PostItem(
+    modifier: Modifier = Modifier,
+    post: Post
+) {
+    Surface(modifier = modifier) {
         Row(
             modifier = Modifier
                 .padding(16.dp)
@@ -101,7 +121,8 @@ fun TitleAndAuthor(
     Column(modifier = modifier) {
         Text(
             text = post.title!!,
-            style = MaterialTheme.typography.body1
+            style = MaterialTheme.typography.body1,
+            maxLines = 2
         )
         Spacer(modifier = Modifier.height(8.dp))
         Providers(AmbientContentAlpha provides ContentAlpha.medium) {
@@ -125,10 +146,10 @@ fun PostImage(
         contentScale = ContentScale.Crop,
         fadeIn = true,
         loading = {
-            Image(vectorResource(R.drawable.ic_photo))
+            Image(vectorResource(R.drawable.ic_photo), alpha = 0.45f)
         },
         error = {
-            Image(vectorResource(R.drawable.ic_broken_image))
+            Image(vectorResource(R.drawable.ic_broken_image), alpha = 0.45f)
         }
     )
 }
