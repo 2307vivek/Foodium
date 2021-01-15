@@ -24,18 +24,25 @@
 
 package dev.shreyaspatil.foodium.ui.main
 
+import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import dev.chrisbanes.accompanist.coil.CoilImage
 import dev.shreyaspatil.foodium.R
+import dev.shreyaspatil.foodium.model.Post
 import dev.shreyaspatil.foodium.model.State
 import dev.shreyaspatil.foodium.utils.onBulbClick
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -44,23 +51,99 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun MainScreen(mainViewModel: MainViewModel) {
     val context = AmbientContext.current
-    val posts = mainViewModel.postLiveState.observeAsState().value
+    val postsState = mainViewModel.postLiveState.observeAsState().value
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(text = stringResource(id = R.string.app_name)) },
-                actions = {
-                    IconButton(onClick = { onBulbClick(context) }) {
-                        Icon(
-                            imageVector = vectorResource(id = R.drawable.ic_lightbulb),
-                            tint = MaterialTheme.colors.onPrimary
-                        )
-                    }
-                }
-            )
+            FoodiumTopAppBar(stringResource(R.string.app_name), context)
         },
         bodyContent = {
-            Text(text = "Hello Compose")
+            if (postsState!!.loading) {
+                Text(text = "Loading")
+            } else if (postsState.isSuccess) {
+                PostItem(postsState.data!![0])
+            } else {
+                Text(text = postsState.error!!)
+            }
+        }
+    )
+}
+
+@Composable
+fun PostItem(post: Post) {
+    Surface(modifier = Modifier.padding(top = 4.dp)) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+
+            TitleAndAuthor(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp),
+                post = post
+            )
+
+            PostImage(
+                modifier = Modifier.preferredSize(90.dp),
+                imageUrl = post.imageUrl!!
+            )
+        }
+    }
+}
+
+@Composable
+fun TitleAndAuthor(
+    modifier: Modifier = Modifier,
+    post: Post
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = post.title!!,
+            style = MaterialTheme.typography.body1
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+            Text(
+                text = post.author!!,
+                style = MaterialTheme.typography.body2,
+            )
+        }
+    }
+
+}
+
+@Composable
+fun PostImage(
+    modifier: Modifier = Modifier,
+    imageUrl: String
+) {
+    CoilImage(
+        modifier = modifier,
+        data = imageUrl,
+        contentScale = ContentScale.Crop,
+        fadeIn = true,
+        loading = {
+            Image(vectorResource(R.drawable.ic_photo))
+        },
+        error = {
+            Image(vectorResource(R.drawable.ic_broken_image))
+        }
+    )
+}
+
+@Composable
+fun FoodiumTopAppBar(title: String, context: Context) {
+    TopAppBar(
+        title = { Text(title) },
+        actions = {
+            IconButton(onClick = { onBulbClick(context) }) {
+                Icon(
+                    imageVector = vectorResource(id = R.drawable.ic_lightbulb),
+                    tint = MaterialTheme.colors.onPrimary
+                )
+            }
         }
     )
 }

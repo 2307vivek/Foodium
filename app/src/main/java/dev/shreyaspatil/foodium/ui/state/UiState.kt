@@ -34,7 +34,7 @@ data class UiState<T>(
     val data: T? = null
 ) {
     val isSuccess: Boolean
-        get() = !loading && error != null
+        get() = !loading && error == null
 
     companion object {
         /**

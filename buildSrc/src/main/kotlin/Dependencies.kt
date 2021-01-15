@@ -61,9 +61,10 @@ object Room {
 }
 
 object Compose {
-    const val version = "1.0.0-alpha09"
+    const val version = "1.0.0-alpha10"
     const val ui = "androidx.compose.ui:ui:$version"
     const val material = "androidx.compose.material:material:$version"
     const val runtimeLivedata = "androidx.compose.runtime:runtime-livedata:$version"
     const val tooling = "androidx.compose.ui:ui-tooling:$version"
+    const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.4.2"
 }
