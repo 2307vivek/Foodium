@@ -47,8 +47,14 @@ class MainViewModel @ViewModelInject constructor(private val postsRepository: Po
     ViewModel() {
 
     private val _postsLiveData = MutableLiveData<State<List<Post>>>()
-
     val postsLiveData: LiveData<State<List<Post>>> = _postsLiveData
+
+    private val _postsLiveDataState = MutableLiveData<UiState<List<Post>>>()
+    val postLiveState: LiveData<UiState<List<Post>>> = _postsLiveDataState
+
+    init {
+        getPostsState()
+    }
 
     fun getPosts() {
         viewModelScope.launch {
@@ -59,10 +65,7 @@ class MainViewModel @ViewModelInject constructor(private val postsRepository: Po
         }
     }
 
-    private val _postsLiveDataState = MutableLiveData<UiState<List<Post>>>()
-    val postLiveState: LiveData<UiState<List<Post>>> = _postsLiveDataState
-
-    fun getPostsState() {
+    private fun getPostsState() {
         viewModelScope.launch {
             postsRepository.getAllPosts()
                 .onStart { _postsLiveDataState.value = UiState(loading = true) }

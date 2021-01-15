@@ -31,6 +31,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -47,23 +48,22 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
+fun MainScreen() {
+    val mainViewModel: MainViewModel = viewModel()
     val context = AmbientContext.current
-    val postsState = mainViewModel.postLiveState.observeAsState()
-
-    mainViewModel.getPostsState()
+    val postsState by mainViewModel.postLiveState.observeAsState()
 
     Scaffold(
         topBar = {
             FoodiumTopAppBar(stringResource(R.string.app_name), context)
         },
         bodyContent = {
-            if (postsState.value!!.loading) {
+            if (postsState!!.loading) {
                 Text(text = "Loading")
-            } else if (postsState.value!!.isSuccess) {
-                PostList(posts = postsState.value!!.data!!)
+            } else if (postsState!!.isSuccess) {
+                PostList(posts = postsState!!.data!!)
             } else {
-                Text(text = postsState.value!!.error!!)
+                Text(text = postsState!!.error!!)
             }
         }
     )
