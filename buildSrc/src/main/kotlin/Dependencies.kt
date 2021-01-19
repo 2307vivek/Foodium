@@ -67,4 +67,5 @@ object Compose {
     const val runtimeLivedata = "androidx.compose.runtime:runtime-livedata:$version"
     const val tooling = "androidx.compose.ui:ui-tooling:$version"
     const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.4.2"
+    const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha05"
 }

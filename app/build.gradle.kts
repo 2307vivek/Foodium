@@ -138,6 +138,7 @@ dependencies {
     implementation(Compose.runtimeLivedata)
     implementation(Compose.tooling)
     implementation(Compose.coil)
+    implementation(Compose.navigation)
 
     // Testing
     testImplementation(Testing.core)
