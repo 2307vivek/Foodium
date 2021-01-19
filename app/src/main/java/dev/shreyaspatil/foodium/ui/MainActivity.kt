@@ -25,26 +25,22 @@
 package dev.shreyaspatil.foodium.ui
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.platform.setContent
 import dagger.hilt.android.AndroidEntryPoint
-import dev.shreyaspatil.foodium.ui.main.MainViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val mainViewModel: MainViewModel by viewModels()
-
-        mainViewModel.getPosts()
-
         setContent {
-            FoodiumApp(mainViewModel)
+            FoodiumApp()
         }
     }
 }

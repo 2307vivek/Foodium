@@ -24,23 +24,25 @@
 
 package dev.shreyaspatil.foodium.di.module
 
-import android.app.Application
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import dev.shreyaspatil.foodium.data.local.FoodiumPostsDatabase
-import javax.inject.Singleton
+import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dev.shreyaspatil.foodium.data.repository.DefaultPostRepository
+import dev.shreyaspatil.foodium.data.repository.PostRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@InstallIn(SingletonComponent::class)
+/**
+ * Currently PostRepository is only used in ViewModels.
+ * PostDetailsViewModel is not injected using @HiltViewModel so can't install in ViewModelComponent.
+ */
+@ExperimentalCoroutinesApi
+@InstallIn(ActivityRetainedComponent::class)
 @Module
-class FoodiumDatabaseModule {
+abstract class PostRepositoryModule {
 
-    @Singleton
-    @Provides
-    fun provideDatabase(application: Application) = FoodiumPostsDatabase.getInstance(application)
-
-    @Singleton
-    @Provides
-    fun providePostsDao(database: FoodiumPostsDatabase) = database.getPostsDao()
+    @ActivityRetainedScoped
+    @Binds
+    abstract fun bindPostRepository(repository: DefaultPostRepository): PostRepository
 }

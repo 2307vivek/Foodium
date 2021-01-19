@@ -12,7 +12,7 @@ object Dependencies {
     const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib:1.4.21"
     const val kotlinGradle = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21"
     const val gradle = "com.android.tools.build:gradle:7.0.0-alpha04"
-    const val daggerHilt = "com.google.dagger:hilt-android-gradle-plugin:2.28-alpha"
+    const val daggerHilt = "com.google.dagger:hilt-android-gradle-plugin:2.31-alpha"
     const val ktLint = "org.jlleitschuh.gradle:ktlint-gradle:9.2.1"
     const val materialDesign = "com.google.android.material:material:1.2.0"
     const val materialDialog = "com.shreyaspatil:MaterialDialog:2.1"
@@ -25,10 +25,10 @@ object Lifecycle {
 }
 
 object Hilt {
-    const val daggerCompiler = "com.google.dagger:hilt-android-compiler:2.28-alpha"
-    const val hiltCompiler = "androidx.hilt:hilt-compiler:1.0.0-alpha01"
-    const val hiltViewModel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"
-    const val hiltAndroid = "com.google.dagger:hilt-android:2.28-alpha"
+    const val daggerCompiler = "com.google.dagger:hilt-android-compiler:2.31-alpha"
+    const val hiltCompiler = "androidx.hilt:hilt-compiler:1.0.0-alpha02"
+    const val hiltViewModel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02"
+    const val hiltAndroid = "com.google.dagger:hilt-android:2.31-alpha"
 }
 
 object Moshi {
@@ -55,15 +55,16 @@ object Android {
 }
 
 object Room {
-    const val compiler = "androidx.room:room-compiler:2.2.5"
-    const val ktx = "androidx.room:room-ktx:2.2.5"
-    const val runtime = "androidx.room:room-runtime:2.2.5"
+    const val compiler = "androidx.room:room-compiler:2.2.6"
+    const val ktx = "androidx.room:room-ktx:2.2.6"
+    const val runtime = "androidx.room:room-runtime:2.2.6"
 }
 
 object Compose {
-    const val version = "1.0.0-alpha09"
+    const val version = "1.0.0-alpha10"
     const val ui = "androidx.compose.ui:ui:$version"
     const val material = "androidx.compose.material:material:$version"
     const val runtimeLivedata = "androidx.compose.runtime:runtime-livedata:$version"
     const val tooling = "androidx.compose.ui:ui-tooling:$version"
+    const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.4.2"
 }

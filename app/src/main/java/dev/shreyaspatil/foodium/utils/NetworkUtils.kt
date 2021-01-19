@@ -68,7 +68,7 @@ object NetworkUtils : ConnectivityManager.NetworkCallback() {
             }
         }
 
-        networkLiveData.postValue(isConnected)
+        networkLiveData.value = isConnected
 
         return networkLiveData
     }

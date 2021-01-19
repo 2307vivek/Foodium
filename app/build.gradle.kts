@@ -117,9 +117,6 @@ dependencies {
     implementation(Dependencies.materialDesign)
     implementation(Dependencies.materialDialog)
 
-    // Coil-kt
-    implementation(Dependencies.coil)
-
     // Retrofit
     implementation(Retrofit.retrofit)
     implementation(Retrofit.moshiRetrofitConverter)
@@ -140,6 +137,7 @@ dependencies {
     implementation(Compose.material)
     implementation(Compose.runtimeLivedata)
     implementation(Compose.tooling)
+    implementation(Compose.coil)
 
     // Testing
     testImplementation(Testing.core)

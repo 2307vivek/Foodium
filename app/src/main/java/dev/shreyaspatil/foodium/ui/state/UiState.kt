@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2020 Shreyas Patil
+ * Copyright (c) 2021 Vivek Singh
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,25 @@
  * SOFTWARE.
  */
 
-package dev.shreyaspatil.foodium.di.module
+package dev.shreyaspatil.foodium.ui.state
 
-import android.app.Application
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import dev.shreyaspatil.foodium.data.local.FoodiumPostsDatabase
-import javax.inject.Singleton
+import dev.shreyaspatil.foodium.data.repository.Resource
 
-@InstallIn(SingletonComponent::class)
-@Module
-class FoodiumDatabaseModule {
+data class UiState<T>(
+    val loading: Boolean = false,
+    val error: String? = null,
+    val data: T? = null
+) {
+    val isSuccess: Boolean
+        get() = !loading && error == null
 
-    @Singleton
-    @Provides
-    fun provideDatabase(application: Application) = FoodiumPostsDatabase.getInstance(application)
-
-    @Singleton
-    @Provides
-    fun providePostsDao(database: FoodiumPostsDatabase) = database.getPostsDao()
+    companion object {
+        /**
+         * Returns [UiState] from [Resource]
+         */
+        fun <T> fromResource(resource: Resource<T>): UiState<T> = when (resource) {
+            is Resource.Success -> UiState(data = resource.data)
+            is Resource.Failed -> UiState(error = resource.message)
+        }
+    }
 }

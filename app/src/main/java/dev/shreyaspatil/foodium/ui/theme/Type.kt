@@ -17,5 +17,15 @@ val FoodiumTypography = Typography(
         fontFamily = GoogleSans,
         fontWeight = FontWeight.Normal,
         fontSize = 18.sp
+    ),
+    body1 = TextStyle(
+        fontFamily = GoogleSans,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp
+    ),
+    body2 = TextStyle(
+        fontFamily = GoogleSans,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
     )
 )
