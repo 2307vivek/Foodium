@@ -24,10 +24,7 @@
 
 package dev.shreyaspatil.foodium.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.shreyaspatil.foodium.data.repository.PostRepository
 import dev.shreyaspatil.foodium.model.Post
@@ -75,4 +72,7 @@ class MainViewModel @Inject constructor(private val postRepository: PostReposito
                 .collect { state -> _postsLiveDataState.value = state }
         }
     }
+
+    fun getPostById(postId: Int) =
+        postRepository.getPostById(postId).asLiveData()
 }

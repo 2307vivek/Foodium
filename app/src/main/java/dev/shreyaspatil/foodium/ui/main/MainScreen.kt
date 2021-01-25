@@ -32,6 +32,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -47,10 +48,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.navigate
 import dev.chrisbanes.accompanist.coil.CoilImage
 import dev.shreyaspatil.foodium.R
 import dev.shreyaspatil.foodium.model.Post
+import dev.shreyaspatil.foodium.ui.navigation.Screen
 import dev.shreyaspatil.foodium.ui.theme.connected
 import dev.shreyaspatil.foodium.ui.theme.notConnected
 import dev.shreyaspatil.foodium.utils.NetworkUtils
@@ -60,8 +63,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalAnimationApi
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun MainScreen() {
-    val mainViewModel: MainViewModel = viewModel()
+fun MainScreen(
+    mainViewModel: MainViewModel,
+    navController: NavController
+) {
     val context = AmbientContext.current
     val postsState by mainViewModel.postLiveState.observeAsState()
     val networkState by NetworkUtils.getNetworkLiveData(context).observeAsState()
@@ -78,7 +83,12 @@ fun MainScreen() {
                 if (postsState!!.loading) {
                     Text(text = "Loading")
                 } else if (postsState!!.isSuccess) {
-                    PostList(posts = postsState!!.data!!)
+                    PostList(
+                        posts = postsState!!.data!!,
+                        onClickPost = { postId ->
+                            navController.navigate(Screen.PostDetail.routeTo(postId))
+                        }
+                    )
                 } else {
                     Text(text = postsState!!.error!!)
                 }
@@ -88,7 +98,10 @@ fun MainScreen() {
 }
 
 @Composable
-fun PostList(posts: List<Post>) {
+fun PostList(
+    posts: List<Post>,
+    onClickPost: (Int) -> Unit
+) {
     var topPadding: Int
     LazyColumn(content = {
         itemsIndexed(
@@ -97,7 +110,11 @@ fun PostList(posts: List<Post>) {
                 topPadding = if (index == 0) 4 else 1
                 PostItem(
                     post = post,
-                    modifier = Modifier.padding(top = topPadding.dp)
+                    modifier = Modifier
+                        .padding(top = topPadding.dp)
+                        .clickable(onClick = {
+                            onClickPost(post.id!!)
+                        })
                 )
             }
         )
