@@ -22,30 +22,15 @@
  * SOFTWARE.
  */
 
-package dev.shreyaspatil.foodium.ui
+package dev.shreyaspatil.foodium.ui.navigation
 
-import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.ui.platform.setContent
-import dagger.hilt.android.AndroidEntryPoint
-import dev.shreyaspatil.foodium.ui.main.MainViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+sealed class Screen(open val route: String = "") {
+    object Main : Screen("main")
+    object PostDetail : Screen() {
+        private const val _route = "post_detail"
+        const val postId = "post_id"
+        override val route = "$_route/{$postId}"
 
-@ExperimentalCoroutinesApi
-@AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-
-    private val mainViewModel: MainViewModel by viewModels()
-
-    @ExperimentalAnimationApi
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setContent {
-            FoodiumApp(mainViewModel)
-        }
+        fun routeTo(id: Int) = "$_route/$id"
     }
 }

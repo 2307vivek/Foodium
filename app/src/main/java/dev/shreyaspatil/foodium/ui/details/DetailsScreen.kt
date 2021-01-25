@@ -24,10 +24,31 @@
 
 package dev.shreyaspatil.foodium.ui.details
 
+import androidx.compose.foundation.clickable
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+import dev.shreyaspatil.foodium.ui.main.MainViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @Composable
-fun DetailsScreen() {
-    Text(text = "This is Details Screen")
+fun PostDetailScreen(
+    postId: Int?,
+    mainViewModel: MainViewModel,
+    navController: NavController
+) {
+    val post by mainViewModel.getPostById(postId!!).observeAsState()
+
+    post?.let {
+        Text(
+            text = it.title!!,
+            modifier = Modifier.clickable(onClick = {
+                navController.popBackStack()
+            })
+        )
+    }
 }

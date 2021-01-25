@@ -26,13 +26,53 @@ package dev.shreyaspatil.foodium.ui
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.viewinterop.viewModel
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navArgument
+import androidx.navigation.compose.rememberNavController
+import dev.shreyaspatil.foodium.ui.details.PostDetailScreen
 import dev.shreyaspatil.foodium.ui.main.MainScreen
+import dev.shreyaspatil.foodium.ui.main.MainViewModel
+import dev.shreyaspatil.foodium.ui.navigation.Screen
 import dev.shreyaspatil.foodium.ui.theme.FoodiumTheme
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @ExperimentalAnimationApi
 @Composable
-fun FoodiumApp() {
+fun FoodiumApp(mainViewModel: MainViewModel) {
     FoodiumTheme {
-        MainScreen()
+        FoodiumNavigation(mainViewModel)
+    }
+}
+
+@ExperimentalCoroutinesApi
+@ExperimentalAnimationApi
+@Composable
+fun FoodiumNavigation(mainViewModel: MainViewModel) {
+    val navController = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Main.route,
+    ) {
+        composable(Screen.Main.route) {
+            MainScreen(mainViewModel,navController)
+        }
+
+        composable(
+            route = Screen.PostDetail.route,
+            arguments = listOf(navArgument(Screen.PostDetail.postId) {
+                type = NavType.IntType
+            })
+        ) { navBackStackEntry ->
+            PostDetailScreen(
+                postId = navBackStackEntry.arguments?.getInt(Screen.PostDetail.postId),
+                mainViewModel = mainViewModel,
+                navController = navController
+            )
+        }
     }
 }
